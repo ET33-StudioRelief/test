@@ -1,12 +1,16 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
-import dotenv from 'dotenv';
+import { config } from 'dotenv';
 import * as esbuild from 'esbuild';
 import { readdirSync } from 'fs';
 import { join, sep } from 'path';
 
-// Charger les variables d'environnement
-dotenv.config();
+// Charger et vérifier les variables d'environnement
+config();
+if (!process.env.VITE_MAPBOX_API_KEY) {
+  console.error('❌ VITE_MAPBOX_API_KEY is missing in .env file');
+  process.exit(1);
+}
 
 // Config output
 const BUILD_DIRECTORY = 'dist';
@@ -31,7 +35,7 @@ const context = await esbuild.context({
   inject: LIVE_RELOAD ? ['./bin/live-reload.js'] : undefined,
   define: {
     SERVE_ORIGIN: JSON.stringify(SERVE_ORIGIN),
-    'process.env.VITE_MAPBOX_ACCESS_TOKEN': JSON.stringify(process.env.VITE_MAPBOX_ACCESS_TOKEN),
+    'process.env.VITE_MAPBOX_API_KEY': JSON.stringify(process.env.VITE_MAPBOX_API_KEY),
   },
 });
 

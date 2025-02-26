@@ -1,39 +1,68 @@
-import type { MapboxOptions } from 'mapbox-gl';
-import mapboxgl, { Map } from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 
-export class MapboxService {
-  private readonly accessToken: string;
-  private map: Map | null = null;
+interface MapboxConfig {
+  apiKey: string;
+  defaultCenter: [number, number];
+  defaultZoom: number;
+}
 
-  constructor() {
-    const token = process.env.VITE_MAPBOX_ACCESS_TOKEN;
-    if (!token) {
-      throw new Error("Token Mapbox manquant. Vérifiez vos variables d'environnement.");
-    }
-    this.accessToken = token;
-    mapboxgl.accessToken = this.accessToken;
+class MapboxService {
+  private static instance: MapboxService;
+  private config: MapboxConfig;
+  private map: mapboxgl.Map | null = null;
+
+  private constructor() {
+    this.validateEnvironment();
+    this.config = {
+      apiKey: process.env.VITE_MAPBOX_API_KEY || '',
+      defaultCenter: [-58.443832, -14.235004],
+      defaultZoom: 3,
+    };
+    mapboxgl.accessToken = this.config.apiKey;
   }
 
-  initialize(containerId: string, options: Partial<MapboxOptions> = {}) {
-    const container = document.getElementById(containerId);
+  private validateEnvironment(): void {
+    if (!process.env.VITE_MAPBOX_API_KEY) {
+      console.error('Mapbox API key is missing');
+      return;
+    }
+  }
 
+  public static getInstance(): MapboxService {
+    if (!MapboxService.instance) {
+      MapboxService.instance = new MapboxService();
+    }
+    return MapboxService.instance;
+  }
+
+  initialize(containerId: string, options = {}) {
+    const container = document.getElementById(containerId);
     if (!container) {
       throw new Error(`Container avec l'ID ${containerId} non trouvé`);
     }
 
-    const defaultOptions: MapboxOptions = {
-      container,
+    this.map = new mapboxgl.Map({
+      container: containerId,
       style: 'mapbox://styles/e3web/cm2n8sqgb003601pm1apjc464',
-      center: [2.3522, 48.8566], // Paris
-      zoom: 12,
+      center: this.config.defaultCenter,
+      zoom: this.config.defaultZoom,
       ...options,
-    };
+    });
 
-    this.map = new mapboxgl.Map(defaultOptions);
     return this.map;
   }
 
-  getMap(): Map | null {
+  getMap() {
     return this.map;
+  }
+
+  public getConfig(): MapboxConfig {
+    return this.config;
+  }
+
+  public getApiKey(): string {
+    return this.config.apiKey;
   }
 }
+
+export default MapboxService;
