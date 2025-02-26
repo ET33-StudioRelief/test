@@ -5,5 +5,5 @@ import { initializeMap } from './map';
 
 // Initialisation automatique de la carte
 document.addEventListener('DOMContentLoaded', () => {
-  initializeMap('map-container');
+  initializeMap();
 });
