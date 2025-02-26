@@ -1,7 +1,9 @@
-import { greetUser } from '$utils/greet';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import './styles/map.css';
 
-window.Webflow ||= [];
-window.Webflow.push(() => {
-  const name = 'John Doe';
-  greetUser(name);
+import { initializeMap } from './map';
+
+// Initialisation automatique de la carte
+document.addEventListener('DOMContentLoaded', () => {
+  initializeMap('map-container');
 });

@@ -1,0 +1,15 @@
+/* Ajoutez ces styles pour assurer que la carte s'affiche correctement */
+.mapboxgl-map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Si vous utilisez des popups */
+.mapboxgl-popup {
+  max-width: 400px;
+  font:
+    12px/20px 'Helvetica Neue',
+    Arial,
+    Helvetica,
+    sans-serif;
+}

@@ -39,9 +39,13 @@
     "@changesets/cli": "^2.27.12",
     "@eslint/js": "^9.19.0",
     "@finsweet/eslint-config": "^3.0.3",
+    "@finsweet/ts-utils": "^0.40.0",
     "@finsweet/tsconfig": "^1.4.2",
     "@playwright/test": "^1.50.1",
+    "@types/mapbox-gl": "^3.4.1",
+    "@types/node": "^22.13.5",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.4.7",
     "esbuild": "^0.24.2",
     "eslint": "^9.19.0",
     "eslint-config-prettier": "^10.0.1",
@@ -51,10 +55,10 @@
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.23.0"
   },
-  "dependencies": {
-    "@finsweet/ts-utils": "^0.40.0"
-  },
   "engines": {
     "pnpm": ">=10"
+  },
+  "dependencies": {
+    "mapbox-gl": "^3.10.0"
   }
 }

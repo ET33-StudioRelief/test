@@ -1,6 +1,12 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-console */
+import dotenv from 'dotenv';
 import * as esbuild from 'esbuild';
 import { readdirSync } from 'fs';
 import { join, sep } from 'path';
+
+// Charger les variables d'environnement
+dotenv.config();
 
 // Config output
 const BUILD_DIRECTORY = 'dist';
@@ -25,6 +31,7 @@ const context = await esbuild.context({
   inject: LIVE_RELOAD ? ['./bin/live-reload.js'] : undefined,
   define: {
     SERVE_ORIGIN: JSON.stringify(SERVE_ORIGIN),
+    'process.env.VITE_MAPBOX_ACCESS_TOKEN': JSON.stringify(process.env.VITE_MAPBOX_ACCESS_TOKEN),
   },
 });
 
@@ -87,6 +94,5 @@ function logServedFiles() {
     })
     .filter(Boolean);
 
-  // eslint-disable-next-line no-console
   console.table(filesInfo);
 }
